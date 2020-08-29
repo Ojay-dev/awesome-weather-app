@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+  font-style: normal;
+  background: linear-gradient(280.67deg, #FFFFFF 39.65%, rgba(255, 255, 255, 0) 87.46%), #C9E2FF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
+
+header .logo {
+  /* font-family: Patrick Hand; */
+  font-style: normal;
+  font-weight: normal;
+  /* font-size: 23px; */
+  line-height: 68px;
+  color: #000000;
+  margin: 0;
+}
+
+header form div {
+  display: flex;
+  align-items: center;
+  background: #F9FAFB;
+  border-radius: 30px;
+}
+
+header form svg {
+  width: 18px;
+  padding: 8px;
+  margin-left: 11px;
+}
+
+header form input[type="search"] {
+  /* padding: 8px; */
+  border: none;
+  background: none;
+  margin-right: 11  px;
+}
+
+header form input[type="search"]::placeholder {}
+
+header form input[type="search"]:focus {
+  outline: none;
+}
+
+main div.current-location {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
