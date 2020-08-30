@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 body {
   margin: 0;
-  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+  font-family: Patrick Hand, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
   font-style: normal;
   background: linear-gradient(280.67deg, #FFFFFF 39.65%, rgba(255, 255, 255, 0) 87.46%), #C9E2FF;
   -webkit-font-smoothing: antialiased;
@@ -14,8 +15,7 @@ code {
 
 header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
@@ -23,39 +23,53 @@ header {
 }
 
 header .logo {
-  /* font-family: Patrick Hand; */
+  font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
-  /* font-size: 23px; */
+  font-size: 30px;
+  text-align: center;
   line-height: 68px;
   color: #000000;
   margin: 0;
 }
 
 header form div {
+  width: 50%;
+  margin: auto;
   display: flex;
   align-items: center;
-  background: #F9FAFB;
-  border-radius: 30px;
+  background: #FFFFFF;
+  border-radius: 40px;
+  filter: drop-shadow(0px 0px 12px rgba(0, 0, 0, 0.068));
+  padding: 12px;
 }
 
 header form svg {
-  width: 18px;
-  padding: 8px;
+  width: 20px;
   margin-left: 11px;
+  fill: rgb(185, 184, 184);
 }
 
 header form input[type="search"] {
-  /* padding: 8px; */
+  width: 100%;
+  padding: 0 8px;
   border: none;
   background: none;
   margin-right: 11 px;
 }
 
-header form input[type="search"]::placeholder {}
+header form input[type="search"]::placeholder {
+  font-size: 14px;
+  color: rgb(185, 184, 184);
+}
 
 header form input[type="search"]:focus {
   outline: none;
+}
+
+main {
+  width: 90%;
+  margin: 0 auto;
 }
 
 main div.current-location {
@@ -78,7 +92,7 @@ main div.current-location {
 }
 
 .current-weather-details>div>div span {
-  /* font-family: Patrick Hand; */
+  font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
   font-size: 25px;
@@ -93,7 +107,7 @@ main div.current-location {
 }
 
 .current-weather-details .weather-degree {
-  /* font-family: Patrick Hand; */
+  font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
   font-size: 150px;
@@ -102,11 +116,11 @@ main div.current-location {
 }
 
 .current-weather-details h3 {
-  text-align: right;
-  /* font-family: Patrick Hand; */
+  font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
   font-size: 40px;
+  text-align: right;
   line-height: 54px;
   text-transform: uppercase;
   color: #000000;
@@ -114,7 +128,7 @@ main div.current-location {
 }
 
 .current-weather-details h4 {
-  /* font-family: Patrick Hand; */
+  font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
   font-size: 25px;
@@ -122,4 +136,71 @@ main div.current-location {
   text-align: right;
   color: #000000;
   margin: 0;
+}
+
+.location-image {
+  width: 350px;
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.location-image>img {
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .location-image {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .current-weather-details .weather-degree {
+    font-size: 100px;
+    line-height: 120px;
+  }
+
+  .current-weather-details h3 {
+    font-size: 25px;
+    line-height: 44px;
+  }
+  
+  .current-weather-details h4 {
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .location-image {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  main div.current-location {
+    flex-direction: column-reverse;
+  }
+  .current-weather-details {
+    margin-right: 0;
+  }
+  .location-image {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  header form div {
+    width: 90%;
+  }
+
+  .current-weather-details .weather-degree {
+    font-size: 70px;
+    line-height: 80px;
+  }
 }
