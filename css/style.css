@@ -83,6 +83,10 @@ main div.current-location {
   margin-right: 50px;
 }
 
+.current-weather-details img {
+  width: 100%;
+}
+
 .current-weather-details>div, .current-weather-details>div>div {
   display: flex;
   align-items: center;
