@@ -38,7 +38,3 @@ export function currentDate() {
 
   return `${day}, ${date} ${month} ${year}`;
 }
-
-export function getCountryName(shortCode) {
-  
-}
