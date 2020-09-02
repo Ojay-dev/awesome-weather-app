@@ -73,6 +73,7 @@ header form input[type="search"]:focus {
 main {
   width: 90%;
   margin: 0 auto;
+  display: none;
 }
 
 main div.current-location {
@@ -211,7 +212,6 @@ main div.current-location {
 
 .loader {
   position: absolute;
-  display: none;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
