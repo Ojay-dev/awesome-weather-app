@@ -1,41 +1,26 @@
-import { url, setInnerHTML, currentDate } from "./helperFunctions.js";
-import countryIso from "./countryISO.js";
+import {
+  ParseLocation,
+  currentDate,
+  addForecast,
+  errorReport,
+  url,
+} from "./helperFunctions.js";
 
-const weatherDetails = document.querySelector(".current-weather-details");
-const notFoundErrorMsg = document.querySelector(".not-found");
 const searchForm = document.querySelector("form");
+let currentLocation = document.querySelector(".current-location");
 const preloader = document.querySelector(".loader");
-const weatherDom = document.querySelector("main");
-
-let location;
 
 window.addEventListener("load", () => {
-  document.querySelector(
-    ".current-weather-details h3"
-  ).innerHTML = currentDate();
-
+  preloader.setAttribute("style", "display:block;");
   const successfulLookup = async (position) => {
     const { latitude, longitude } = position.coords;
-
-    try {
-      let response = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=d03c0184daa143daba2fc0b38cad9cd1`
-      );
-      location = await response.json();
-      console.log(location.results[0].components.city);
-      lookUpLocationWeather(location.results[0].components.city)
-    } catch (error) {
-      console.error("Error, ", error);
-      weatherDetails.style.display = "none";
-      notFoundErrorMsg.style.display = "block";
-      notFoundErrorMsg.innerHTML = "Please enter your location"
-    }
+    lookUpLocationWeather({ lat: latitude, lon: longitude });
   };
 
   const errorLookup = (error) => {
-    console.log(error);
-    geoLocationErrorHandler();
-  }
+    preloader.setAttribute("style", "display:none;");
+    errorReport("Please enter a location");
+  };
 
   window.navigator.geolocation.getCurrentPosition(
     successfulLookup,
@@ -45,36 +30,36 @@ window.addEventListener("load", () => {
 
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(document.querySelector("input[type='search']").value);
   let searchInput = document.querySelector("input[type='search']").value;
-
+  currentLocation.innerHTML = "";
+  document.querySelector(".forecast-section").innerHTML = "";
+  preloader.setAttribute("style", "display:block;");
   lookUpLocationWeather(searchInput);
 });
 
-function geoLocationErrorHandler() {
-  preloader.style.display = "none";
-  weatherDetails.style.display = "none";
-  notFoundErrorMsg.style.display = "block";
-  notFoundErrorMsg.innerHTML = "Please enter your location";
-}
-
 async function lookUpLocationWeather(location) {
   try {
-    let response = await fetch(url(location));
+    let response;
+    let locationData = {};
 
-    console.log(response);
-
-    preloader.style.display = "block";
-    weatherDom.style.display = "none";
-
-    if (weatherDetails.style.display === "none") {
-      weatherDetails.style.display = "block";
-      notFoundErrorMsg.style.display = "none";
+    if (typeof location === "object") {
+      response = await fetch(url(location.lat, location.lon));
+      let data = await fetch(
+        `https://us1.locationiq.com/v1/reverse.php?key=37af076ab6193a&format=json&lat=${location.lat}&lon=${location.lon}`
+      );
+      data = await data.json();
+      console.log(data.address.state);
+      locationData = {
+        location: data.address.state,
+        country: data.address.country,
+      };
+    } else {
+      locationData = await ParseLocation(location);
+      response = await fetch(url(locationData.latitude, locationData.latitude));
     }
 
     if (response.status === 404) {
-      weatherDetails.style.display = "none";
-      notFoundErrorMsg.style.display = "block";
+      errorReport("Location not found!");
     }
 
     if (!response.ok) {
@@ -83,48 +68,57 @@ async function lookUpLocationWeather(location) {
 
     if (response.status === 200) {
       response = await response.json();
-      setTimeout(() => {
-        setInnerHTML(".weather-degree>span", Math.round(response.main.temp));
-        setInnerHTML(
-          ".current-weather-details>h4",
-          `${response.name}, ${countryIso[response.sys.country]}`
-        );
-
-        setInnerHTML("#weather-description", response.weather[0].description);
-
-        let sunnyCondition = ["clear", "sun"];
-        let cloudCondition = ["clouds"];
-        let rainCondition = ["rain", "drizzle"];
-
-        if (
-          sunnyCondition.some((str) =>
-            response.weather[0].description.toLowerCase().includes(str)
-          )
-        ) {
-          document
-            .querySelector(".current-weather-details img")
-            .setAttribute("src", "./svg/sun.svg");
-        } else if (
-          rainCondition.some((str) =>
-            response.weather[0].description.toLowerCase().includes(str)
-          )
-        ) {
-          document
-            .querySelector(".current-weather-details img")
-            .setAttribute("src", "./svg/rain.svg");
-        } else {
-          document
-            .querySelector(".current-weather-details img")
-            .setAttribute("src", "./svg/cloud.svg");
-        }
-        preloader.style.display = "none";
-        weatherDom.style.display = "block";
-      }, 1000);
-
       console.log(response);
+
+      let sunnyCondition = ["clear", "sun"];
+      let cloudCondition = ["clouds"];
+      let rainCondition = ["rain", "drizzle"];
+
+      let weatherIcon = sunnyCondition.some((str) =>
+        response.current.weather[0].description.toLowerCase().includes(str)
+      )
+        ? "./svg/sun.svg"
+        : rainCondition.some((str) =>
+            response.current.weather[0].description.toLowerCase().includes(str)
+          )
+        ? "./svg/rain.svg"
+        : "./svg/cloud.svg";
+
+      let currentWeatherDetails = document.createElement("div");
+      currentWeatherDetails.classList.add("current-weather-details");
+
+      currentWeatherDetails.innerHTML = `
+        <div>
+          <div>
+            <img src=${weatherIcon} alt="rain" />
+
+            <span id="weather-description">rainy</span>
+          </div>
+
+          <span class="vr"></span>
+
+          <span class="weather-degree"> ${Math.round(
+            response.current.temp
+          )}&deg;C </span>
+        </div>
+
+        <h3>${currentDate()}</h3>
+        <h4>${locationData.location}, ${
+        !locationData.state
+          ? ""
+          : locationData.location === locationData.state
+          ? ""
+          : locationData.state + ","
+      }  ${locationData.country}
+        </h4>
+      `;
+
+      currentLocation.innerHTML = "";
+      preloader.setAttribute("style", "display:none;");
+      currentLocation.appendChild(currentWeatherDetails);
+      addForecast(response.daily);
     }
   } catch (error) {
-    console.log(error.message);
-    geoLocationErrorHandler()
+    errorReport("An error occured");
   }
 }
