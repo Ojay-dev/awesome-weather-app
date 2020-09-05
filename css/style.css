@@ -17,26 +17,46 @@ code {
 header {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  justify-content: center;
+  align-items: center;
+  /* width: 50%; */
   margin: 0 auto;
   padding: 20px 0;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
-header .logo {
+.logo {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.logo img {
+  width: 8%;
+  margin-right: 10px;
+}
+
+.logo h2 {
   font-family: Patrick Hand;
   font-style: normal;
   font-weight: normal;
   font-size: 40px;
   text-align: center;
+  text-transform: uppercase;
   line-height: 68px;
   color: #fff;
   margin: 0;
   margin-bottom: 20px;
 }
 
+header form {
+  width: 45%;
+}
+
 header form div {
-  width: 50%;
+  width: 100%;
   margin: auto;
   display: flex;
   align-items: center;
@@ -176,6 +196,7 @@ main div.current-location {
 }
 
 .forecast>div {
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -203,6 +224,7 @@ main div.current-location {
 
 .forecast h3 {
   font-size: 18px;
+  margin: 10px 0 0;
 }
 
 .forecast img {
@@ -215,6 +237,19 @@ main div.current-location {
   margin-right: 15px;
 }
 
+.valid-location-error {
+  height: 50vh;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 55px;
+  color: #fff;
+  background: #323544;
+  border-radius: 20px;
+}
+
 .loader {
   position: absolute;
   display: none;
@@ -223,7 +258,7 @@ main div.current-location {
   transform: translate(-50%, -50%);
   border: 5px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 5px solid #3498db;
+  border-top: 5px solid #323544;
   width: 50px;
   height: 50px;
   -webkit-animation: spin 1800ms linear infinite;
@@ -275,9 +310,8 @@ main div.current-location {
     font-size: 15px;
     line-height: 24px;
   }
-  .location-image {
-    width: 200px;
-    height: 200px;
+  .forecast h3 {
+    margin: 15px 0 0;
   }
 }
 
@@ -288,6 +322,12 @@ main div.current-location {
   .current-weather-details {
     width: 70%;
   }
+  header form {
+    width: 70%;
+  }
+  header form div {
+    width: 90%
+  }
   .location-image {
     width: 150px;
     height: 150px;
@@ -296,7 +336,10 @@ main div.current-location {
 }
 
 @media screen and (max-width: 425px) {
-  header form div {
+  .logo img {
+    width: 15%;
+  }
+  header form, header form div {
     width: 90%;
   }
   .current-weather-details {
@@ -308,5 +351,18 @@ main div.current-location {
   }
   .forecast-section {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .forecast>div>div {
+    flex-direction: column-reverse;
+  }
+  .forecast>div>div>div {
+    width: 100%;
+  }
+  .forecast .vr {
+    display: none;
+  }
+
+  .forecast h3 {
+    margin-top: 10px;
   }
 }
