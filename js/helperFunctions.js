@@ -5,6 +5,11 @@ export async function ParseLocation(location) {
       `https://api.locationiq.com/v1/autocomplete.php?key=37af076ab6193a&q=${location}&format=json`
     );
     response = await response.json();
+
+    if (response.error) {
+      errorReport("Location not found !");
+    }
+    debugger;
   } catch (error) {
     console.error("Error, ", error);
   }
@@ -72,7 +77,7 @@ export function addForecast(dailyForecast) {
     if (d.getDay() === 6) {
       forecastDay = -1;
     }
- 
+
     forecastDiv[i] = document.createElement("div");
     forecastDiv[i].classList.add("forecast");
 
@@ -114,4 +119,18 @@ export function addForecast(dailyForecast) {
   forecastDiv.forEach((div) => {
     forecastSection.appendChild(div);
   });
+}
+
+export function errorReport(error) {
+  let currentLocation = document.querySelector(".current-location");
+      let notFound = document.createElement("div");
+      notFound.classList.add("valid-location-error");
+      notFound.innerHTML = error;
+      currentLocation.innerHTML = "";
+      document.querySelector(".forecast-section").innerHTML = "";
+      currentLocation.appendChild(notFound);
+}
+
+export function url(lat, lon) {
+  return `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&%20exclude=minutely,hourly&units=metric&appid=9bcd3d9f9f02d99878e8189061742670`;
 }

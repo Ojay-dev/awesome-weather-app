@@ -2,21 +2,24 @@ import {
   ParseLocation,
   currentDate,
   addForecast,
+  errorReport,
+  url,
 } from "./helperFunctions.js";
 
-
 const searchForm = document.querySelector("form");
-
+let currentLocation = document.querySelector(".current-location");
+const preloader = document.querySelector(".loader");
 
 window.addEventListener("load", () => {
-
+  preloader.setAttribute("style", "display:block;");
   const successfulLookup = async (position) => {
     const { latitude, longitude } = position.coords;
     lookUpLocationWeather({ lat: latitude, lon: longitude });
   };
 
   const errorLookup = (error) => {
-    geoLocationErrorHandler();
+    preloader.setAttribute("style", "display:none;");
+    errorReport("Please enter a location");
   };
 
   window.navigator.geolocation.getCurrentPosition(
@@ -28,19 +31,11 @@ window.addEventListener("load", () => {
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   let searchInput = document.querySelector("input[type='search']").value;
-
+  currentLocation.innerHTML = "";
+  document.querySelector(".forecast-section").innerHTML = "";
+  preloader.setAttribute("style", "display:block;");
   lookUpLocationWeather(searchInput);
 });
-
-function geoLocationErrorHandler() {
-  // weatherDetails.style.display = "none";
-  // notFoundErrorMsg.style.display = "block";
-  // notFoundErrorMsg.innerHTML = "Please enter a location";
-}
-
-function url(lat, lon) {
-  return `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&%20exclude=minutely,hourly&units=metric&appid=9bcd3d9f9f02d99878e8189061742670`;
-}
 
 async function lookUpLocationWeather(location) {
   try {
@@ -64,8 +59,7 @@ async function lookUpLocationWeather(location) {
     }
 
     if (response.status === 404) {
-      weatherDetails.style.display = "none";
-      notFoundErrorMsg.style.display = "block";
+      errorReport("Location not found!");
     }
 
     if (!response.ok) {
@@ -90,7 +84,6 @@ async function lookUpLocationWeather(location) {
         ? "./svg/rain.svg"
         : "./svg/cloud.svg";
 
-      let currentLocation = document.querySelector(".current-location");
       let currentWeatherDetails = document.createElement("div");
       currentWeatherDetails.classList.add("current-weather-details");
 
@@ -121,12 +114,11 @@ async function lookUpLocationWeather(location) {
       `;
 
       currentLocation.innerHTML = "";
+      preloader.setAttribute("style", "display:none;");
       currentLocation.appendChild(currentWeatherDetails);
-
-      
       addForecast(response.daily);
     }
   } catch (error) {
-    geoLocationErrorHandler();
+    errorReport("An error occured");
   }
 }
