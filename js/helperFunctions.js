@@ -1,7 +1,3 @@
-export function setInnerHTML(selector, content) {
-  document.querySelector(selector).innerHTML = content;
-}
-
 export async function ParseLocation(location) {
   let response;
   try {
