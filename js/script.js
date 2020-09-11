@@ -10,6 +10,19 @@ const searchForm = document.querySelector("form");
 let currentLocation = document.querySelector(".current-location");
 const preloader = document.querySelector(".loader");
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("../sw.js")
+      .then((swReg) => {
+        console.log("Service Worker is registered", swReg);
+      })
+      .catch((err) => {
+        console.error("Service Worker Error", err);
+      });
+  });
+}
+
 window.addEventListener("load", () => {
   preloader.setAttribute("style", "display:block;");
   const successfulLookup = async (position) => {
@@ -59,6 +72,7 @@ async function lookUpLocationWeather(location) {
     }
 
     if (response.status === 404) {
+      preloader.setAttribute("style", "display:none;");
       errorReport("Location not found!");
     }
 
@@ -72,7 +86,7 @@ async function lookUpLocationWeather(location) {
 
       let sunnyCondition = ["clear", "sun"];
       let cloudCondition = ["clouds"];
-      let rainCondition = ["rain", "drizzle"];
+      let rainCondition = ["rainy", "rain", "drizzle"];
 
       let weatherIcon = sunnyCondition.some((str) =>
         response.current.weather[0].description.toLowerCase().includes(str)
@@ -119,6 +133,7 @@ async function lookUpLocationWeather(location) {
       addForecast(response.daily);
     }
   } catch (error) {
+    preloader.setAttribute("style", "display:none;");
     errorReport("An error occured");
   }
 }

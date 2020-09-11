@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 body {
   margin: 0;
-  font-family: Patrick Hand;
+  font-family: patrick hand;
   font-style: normal;
   /* background: linear-gradient(280.67deg, #FFFFFF 39.65%, rgba(255, 255, 255, 0) 87.46%), #C9E2FF; */
   background: #1E202B;
@@ -39,7 +39,7 @@ header {
 }
 
 .logo h2 {
-  font-family: Patrick Hand;
+  /* font-family: Patrick Hand; */
   font-style: normal;
   font-weight: normal;
   font-size: 40px;
@@ -127,7 +127,7 @@ main div.current-location {
 }
 
 .current-weather-details>div>div span {
-  font-family: Patrick Hand;
+  /* font-family: Patrick Hand; */
   font-style: normal;
   font-weight: normal;
   font-size: 25px;
@@ -143,7 +143,7 @@ main div.current-location {
 }
 
 .current-weather-details .weather-degree {
-  font-family: Patrick Hand;
+  /* font-family: Patrick Hand; */
   font-style: normal;
   font-weight: normal;
   font-size: 150px;
@@ -153,7 +153,7 @@ main div.current-location {
 }
 
 .current-weather-details h3 {
-  font-family: Patrick Hand;
+  /* font-family: Patrick Hand; */
   font-style: normal;
   font-weight: normal;
   font-size: 40px;
@@ -166,7 +166,7 @@ main div.current-location {
 }
 
 .current-weather-details h4 {
-  font-family: Patrick Hand;
+  /* font-family: Patrick Hand; */
   font-style: normal;
   font-weight: normal;
   font-size: 25px;
